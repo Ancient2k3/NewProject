@@ -1,7 +1,7 @@
 -- Noclip with save data button state --
 if game:IsLoaded() then
     for i, g in ipairs(game:GetService("CoreGui"):GetChildren()) do
-        if g:IsA("ScreenGui") and g.Name = "NoclipSaveData_Test" then
+        if g:IsA("ScreenGui") and g.Name == "NoclipSaveData_Test" then
             g:Destroy()
         end
     end
@@ -103,4 +103,4 @@ end)
 print("Read save data... pls wait!")
 task.wait()
 read_data()
-print("Loaded Data: " .. NCLP)
+print("Loaded Data!")
