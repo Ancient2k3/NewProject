@@ -1,5 +1,12 @@
--- Save Data Button Test --
-if game:IsLoaded() then return end
+-- Noclip with save data button state --
+if game:IsLoaded() then
+    for i, g in ipairs(game:GetService("CoreGui"):GetChildren()) do
+        if g:IsA("ScreenGui") and g.Name = "NoclipSaveData_Test" then
+            g:Destroy()
+        end
+    end
+    print("Game Is Loaded!")
+end
 
 local S1, T1, CG, LP, NCLP, HS
 local data, encode_data, decoded_data
@@ -13,7 +20,7 @@ T1 = Instance.new("TextButton", S1)
 
 NCLP = false
 
-S1.Name = "SaveData_Test"
+S1.Name = "NoclipSaveData_Test"
 T1.BackgroundColor3 = Color3.new(0, 0, 0)
 T1.BackgroundTransparency = 0.5
 T1.Position = UDim2.new(0.3, 0, 0.6, 0)
@@ -51,11 +58,11 @@ end
 function write_data()
     udp_data()
     encode_data = HS:JSONEncode(data)
-    writefile("Noclip_State_Set.txt", encode_data, true)
+    writefile("NoclipStateSet_SaveData.txt", encode_data, true)
 end
 
 function read_data()
-    local success, data = pcall(readfile, "Noclip_State_Set.txt")
+    local success, data = pcall(readfile, "NoclipStateSet_SaveData.txt")
     if success then
         decoded_data = HS:JSONDecode(data)
         NCLP = decoded_data.NCLP
