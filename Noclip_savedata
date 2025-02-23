@@ -1,0 +1,91 @@
+-- Save Data Button Test --
+if game:IsLoaded() then return end
+
+local S1, T1, CG, LP, NCLP, HS
+local data, encode_data, decoded_data
+
+CG = game:GetService("CoreGui")
+HS = game:GetService("HttpService")
+LP = game:GetService("Players").LocalPlayer
+
+S1 = Instance.new("ScreenGui", CG)
+T1 = Instance.new("TextButton", S1)
+
+NCLP = false
+
+S1.Name = "SaveData_Test"
+T1.BackgroundColor3 = Color3.new(0, 0, 0)
+T1.BackgroundTransparency = 0.5
+T1.Position = UDim2.new(0.3, 0, 0.6, 0)
+T1.Size = UDim2.new(0.05, 0, 0.1, 0)
+T1.TextScaled = true
+T1.TextColor3 = Color3.new(1, 1, 1)
+T1.Font = Enum.Font.Code
+T1.Text = "Noclip: OFF"
+T1.Visible = true
+
+data = {
+    NCLP = NCLP
+}
+
+function nclip(bl)
+    for _, n in pairs(LP.Character:GetDescendants()) do
+        if n:IsA("BasePart") then
+            if bl then
+                n.CanCollide = false
+            else
+                n.CanCollide = true
+            end
+        end
+    end
+end
+
+function def_data()
+    NCLP = false
+end
+
+function udp_data()
+    data.NCLP = NCLP
+end
+
+function write_data()
+    udp_data()
+    encode_data = HS:JSONEncode(data)
+    writefile("Noclip_State_Set.txt", encode_data, true)
+end
+
+function read_data()
+    local success, data = pcall(readfile, "Noclip_State_Set.txt")
+    if success then
+        decoded_data = HS:JSONDecode(data)
+        NCLP = decoded_data.NCLP
+    else
+        def_data()
+    end
+    
+    if NCLP then
+        T1.Text = "Noclip: ON"
+        nclip(NCLP)
+    else
+        T1.Text = "Noclip: OFF"
+        nclip(NCLP)
+    end
+end
+
+T1.MouseButton1Click:Connect(function()
+    if NCLP then
+        NCLP = false
+        T1.Text = "Noclip: OFF"
+        nclip(NCLP)
+    else
+        NCLP = true
+        T1.Text = "Noclip: ON"
+        nclip(NCLP)
+    end
+    write_data()
+end)
+
+print("Read save data... pls wait!")
+task.wait()
+read_data()
+print("Loaded Data: " .. NCLP)
