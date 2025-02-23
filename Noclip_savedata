@@ -92,6 +92,14 @@ T1.MouseButton1Click:Connect(function()
     write_data()
 end)
 
+LP.CharacterAdded:Connect(function()
+    if NCLP then
+        NCLP = false
+        T1.Text = "Noclip: OFF"
+        nclip(NCLP)
+    end
+end)
+
 print("Read save data... pls wait!")
 task.wait()
 read_data()
