@@ -1,4 +1,4 @@
--- MiniUI:("Script", {"HHxScripts_Rework", "true"}) --
+-- KingLegacy:("Script", {"Rework", true}) --
 local _ws, _plrs, _rpls, _rs, _mkps, _core
 _ws = game:GetService("Workspace")
 _plrs = game:GetService("Players")
@@ -22,12 +22,20 @@ _openui.Name = "_OpenClosedUI"
 _lockbutton.Name = "_lockUI"
 _switchingpage.Name = "_JOBIS"
 
-local _variables, _func = {
+local _variables, _func, _keys, _data = {
+    main_stuff = {
+        canvas_main = 0,
+        bpadding = 2,
+        bheight = 10
+    }
+}, {
+    uic = function(t, r) local roundui = Instance.new("UICorner", t) roundui.CornerRadius = UDim.new(r, 0) end,
+    mb1c = function(t, script) t.MouseButton1Click:Connect(script) end
+}, {"A", "R", "K", "N", "I", "G", "H", "T"}, {
+    configs_ui_enabled = false,
     is_hide = false,
     is_locked = false,
     set_page = 0
-}, {
-    mb1c = function(t, script) t.MouseButton1Click:Connect(script) end
 }
 
 _blackdragf.BackgroundTransparency = 0
@@ -79,30 +87,58 @@ _switchingpage.Font = Enum.Font.Code
 _switchingpage.Text = "<< MAIN >>"
 _switchingpage.Visible = false
 
+function _addmain_button(btn_text, script)
+    local btn = Instance.new("TextButton", _mainstuff)
+    btn.Name = "__ScriptBTN_#" .. _keys[math.random(1, #_keys)]
+    btn.BackgroundTransparency = 0
+    btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    btn.Position = UDim2.new(0.02, 0, 0, _variables.main_stuff.canvas_main + _variables.main_stuff.bpadding)
+    btn.Size = UDim2.new(0.96, 0, 0, _variables.main_stuff.bheight)
+    btn.TextScaled = true
+    btn.TextSize = 9
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.Code
+    btn.Text = btn_text
+    btn.Visible = true _func.uic(btn, 0.15)
+    _func.mb1c(btn, script)
+    _variables.main_stuff.canvas_main = _variables.main_stuff.canvas_main + _variables.main_stuff.bheight + _variables.main_stuff.bpadding
+    _mainstuff.CanvasSize = UDim2.new(0, 0, 0, _variables.main_stuff.canvas_main)
+    return btn
+end
+
 function _hideframe()
     _mainstuff.Visible = false
 end
 
+local configskills_btn
+configskills_btn = _addmain_button("Configs Skills [X]", function()
+    if not _data.configs_ui_enabled then _data.configs_ui_enabled = true
+        
+    else _data.configs_ui_enabled = false
+        
+    end
+end)
+
 _func.mb1c(_openui, function()
-    if not _variables.is_hide then _variables.is_hide = true
+    if not _data.is_hide then _data.is_hide = true
         _switchingpage.Visible = true
-        if _variables.set_page == 0 then
+        if _data.set_page == 0 then
             _mainstuff.Visible = true
             _switchingpage.Text = "<< MAIN >>"
         end
-    else _variables.is_hide = false
+    else _data.is_hide = false
         _switchingpage.Visible = false
         _hideframe()
     end
 end)
 
 _func.mb1c(_lockbutton, function()
-    if not _variables.is_locked then _variables.is_locked = true
+    if not _data.is_locked then _data.is_locked = true
         if _blackdragf.Draggable ~= false then
             _lockbutton.Text = "Locked"
             _blackdragf.Draggable = false
         end
-    else _variables.is_locked = false
+    else _data.is_locked = false
         if not _blackdragf.Draggable ~= false then
             _lockbutton.Text = "Lock"
             _blackdragf.Draggable = true
