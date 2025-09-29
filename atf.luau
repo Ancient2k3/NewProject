@@ -161,7 +161,7 @@ function _startfarm(t)
                     _canstopnow()
                     _tweentopos(nearest_monster.HumanoidRootPart.Position + Vector3.new(0, 25, 0))
                 else
-                    nearest_monster.HumanoidRootPart.CFrame = CFrame.new(plr.Character.HumanoidRootPart.Position + Vector3.new(0, 900, 0))
+                    nearest_monster.HumanoidRootPart.CFrame = CFrame.new(plr.Character.HumanoidRootPart.Position + Vector3.new(0, 10000, 0))
                 end
             else 
                 _scriptdata.has_monster = false
