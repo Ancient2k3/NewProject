@@ -126,8 +126,8 @@ end
 task.spawn(function()
     if game:IsLoaded() then
         AddUIC(_mFrame, 0.1)
-        AddUIC(_mSFrame, 0.2)
-        AddUIC(_msTextLB, 0.2)
+        AddUIC(_mSFrame, 0.05)
+        AddUIC(_msTextLB, 0.05)
         AddAnimations_Button_Listed("Animation")
     else
         print("Error: Game is not Loaded.")
